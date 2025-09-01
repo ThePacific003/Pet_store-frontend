@@ -1,1 +1,64 @@
 @import "tailwindcss";
+:root{
+  --c1:#515A47;
+  --c2:#D7BE82;
+  --c3:#7A4419;
+  --c4:#755C1B;
+  --c5:#400406;
+}
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Navbar container */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: var(--c1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Inner flex container */
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo */
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--c2);
+  letter-spacing: 1px;
+}
+
+/* Links */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s ease, border-bottom 0.3s ease;
+  padding: 5px 0;
+}
+
+/* Hover & Active state */
+.nav-links li a:hover,
+.nav-links li a.active {
+  color: var(--c2);
+  border-bottom: 2px solid var(--c2);
+}

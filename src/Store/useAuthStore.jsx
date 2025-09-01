@@ -28,8 +28,10 @@ export const useAuthStore = create((set,get)=>({
             set({isloggingIn:true})
             const res = await axiosInstance.post("/auth/login",datas)
             set({authUser:res.data})
+            return res.data
             toast.success("Login Succesfull")
         } catch (error) {
+            set({isloggingIn:false});
             toast.error(error.response.data.message)
         }
         finally{
