@@ -3,18 +3,24 @@ import {create} from "zustand";
 import { axiosInstance } from "../Axios/axiosinc";
 
 export const useRecommendationStore=create((set,get)=>({
+    recommendations:[],
+
+
     recommend:async(datas)=>{
-         try {
-            console.log("hiii");
-            
-            const response = await axiosInstance.get("/breedprofile/recommendation",datas);
-            console.log("response");
+         try {            
+            const response = await axiosInstance.post("/breedprofile/recommendation",datas);
+            set({recommendations: response.data.matches });
+            const recs = get().recommendations
+            console.log(recs);
+        
             
             // return response
            
             
         } catch (error) {
             toast.error(error.message);
+            console.log(error);
+            
         }
     }
 }))

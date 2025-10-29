@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { axiosInstance } from"../Axios/axiosinc";
-import toast from "react-hot-toast";
 import { useRecommendationStore } from "../Store/useRecommendationStore";
+
 const Recommendation = () => {
   const [formData, setFormData] = useState({
     category: "",
@@ -9,96 +8,53 @@ const Recommendation = () => {
     monthlyBudget: "",
     experienceLevel: "",
     livingSpaceNeeds: "",
-    isHypoallergenic: "",
+    isHypoAllergenic: "",   // ✅ corrected spelling
     suitableForVegetarians: "",
+    goodWithChildren: "",   // ✅ added to match backend
     goodWithOtherPets: "",
     prefersIndoorPet: "",
+    waterType: "",          // ✅ added for fish
   });
-  const{recommend} = useRecommendationStore()
 
-  const [recommendations, setRecommendations] = useState([]);
+  const { recommend, recommendations } = useRecommendationStore();
 
-  // Handle radio change
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [name]:value });
   };
 
-  // Fetch recommendations from backend
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-     await recommend(formData);
-    // setRecommendations(rec.data);
-    // console.log(rec);
-    
-  } catch (error) {
-    console.error("Error fetching recommendations:", error);
-  }
-};
+    e.preventDefault();
+    try {
+      await recommend(formData);
+    } catch (error) {
+      console.error("Error fetching recommendations:", error);
+    }
+  };
 
-  // Fields with radio options
+  
   const fields = [
-    {
-      name: "category",
-      label: "Pet Category",
-      options: ["dog", "cat", "rabbit", "fish", "guinea pig"],
-    },
-    {
-      name: "purchaseBudget",
-      label: "Purchase Budget",
-      options: ["low", "medium", "high"],
-    },
-    {
-      name: "monthlyBudget",
-      label: "Monthly Budget",
-      options: ["low", "medium", "high"],
-    },
-    {
-      name: "experienceLevel",
-      label: "Experience Level",
-      options: ["beginner", "intermediate", "expert"],
-    },
-    {
-      name: "livingSpaceNeeds",
-      label: "Living Space Needs",
-      options: ["apartment", "small house", "large house", "farms"],
-    },
-    {
-      name: "isHypoallergenic",
-      label: "Hypoallergenic",
-      options: ["true", "false"],
-    },
-    {
-      name: "suitableForVegetarians",
-      label: "Suitable for Vegetarians",
-      options: ["true", "false"],
-    },
-    {
-      name: "goodWithOtherPets",
-      label: "Good with Other Pets",
-      options: ["true", "false"],
-    },
-    {
-      name: "prefersIndoorPet",
-      label: "Prefers Indoor Pet",
-      options: ["true", "false"],
-    },
+    { name: "category", label: "Pet Category", options: ["dog", "cat", "rabbit", "fish", "guinea pig"] },
+    { name: "purchaseBudget", label: "Purchase Budget", options: ["low", "medium", "high"] },
+    { name: "monthlyBudget", label: "Monthly Budget", options: ["low", "medium", "high"] },
+    { name: "experienceLevel", label: "Experience Level", options: ["beginner", "intermediate", "expert"] },
+    { name: "livingSpaceNeeds", label: "Living Space Needs", options: ["apartment", "small house", "large house", "farms"] },
+    { name: "isHypoAllergenic", label: "Hypoallergenic", options: ["true", "false"] },
+    { name: "suitableForVegetarians", label: "Suitable for Vegetarians", options: ["true", "false"] },
+    { name: "goodWithChildren", label: "Good with Children", options: ["true", "false"] },
+    { name: "goodWithOtherPets", label: "Good with Other Pets", options: ["true", "false"] },
+    { name: "prefersIndoorPet", label: "Prefers Indoor Pet", options: ["true", "false"] },
+    { name: "waterType", label: "Water Type (for fish)", options: ["freshwater", "saltwater"] },
   ];
 
   return (
     <div className="min-h-screen bg-[var(--c2)] py-12 px-6 font-sans">
       <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl p-8">
-        {/* Heading */}
         <h1 className="text-4xl font-bold text-center text-[var(--c5)] mb-8">
           🐾 Find Your Perfect Pet Recommendation
         </h1>
 
-        {/* Input Form */}
-        <form
-          onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8"
-        >
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {fields.map((field, i) => (
             <div key={i} className="flex flex-col">
               <label className="mb-3 font-semibold text-[var(--c1)] text-lg">
@@ -109,12 +65,11 @@ const Recommendation = () => {
                   <label
                     key={idx}
                     className={`flex items-center px-4 py-2 rounded-full cursor-pointer border transition
-                      ${
-                        formData[field.name] === opt
-                          ? "bg-[var(--c5)] text-white border-[var(--c5)]"
-                          : "bg-gray-100 text-black border-gray-300 hover:bg-[var(--c2)]"
+                      ${formData[field.name] === opt
+                        ? "bg-[var(--c5)] text-white border-[var(--c5)]"
+                        : "bg-gray-100 text-black border-gray-300 hover:bg-[var(--c2)]"
                       }`}
-                  >
+                      >
                     <input
                       type="radio"
                       name={field.name}
@@ -122,15 +77,20 @@ const Recommendation = () => {
                       checked={formData[field.name] === opt}
                       onChange={handleChange}
                       className="hidden"
-                    />
+                      onClick={() =>
+      setFormData(prev => ({
+        ...prev,
+        [field.name]: prev[field.name] === opt ? "" : opt // toggle off if clicked again
+      }))
+    }
+                      />
                     {opt.charAt(0).toUpperCase() + opt.slice(1)}
-                  </label>
+                      </label>
                 ))}
               </div>
             </div>
           ))}
 
-          {/* Submit Button */}
           <div className="col-span-1 md:col-span-2 flex justify-center mt-8">
             <button
               type="submit"
@@ -141,23 +101,20 @@ const Recommendation = () => {
           </div>
         </form>
 
-        {/* Selected Values */}
         <div className="mt-12 bg-[var(--c1)] text-white rounded-xl p-6">
           <h2 className="text-2xl font-bold mb-4">Your Selected Preferences:</h2>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
             {Object.entries(formData).map(([key, value], i) =>
               value ? (
                 <li key={i} className="text-lg">
-                  <span className="font-semibold capitalize">{key}:</span>{" "}
-                  {value}
+                  <span className="font-semibold capitalize">{key}:</span> {value}
                 </li>
               ) : null
             )}
           </ul>
         </div>
 
-        {/* Recommendations Section */}
-        <div className="mt-12">
+        <div className="mt-12 flex-wrap">
           <h2 className="text-3xl font-bold text-[var(--c5)] text-center mb-8">
             Recommended Breeds for You
           </h2>
@@ -183,10 +140,16 @@ const Recommendation = () => {
                   </h3>
                   <p className="text-gray-600 mb-4">
                     Category: {item.category} <br />
-                    Budget: {item.purchaseBudget}, Monthly: {item.monthlyBudget}{" "}
-                    <br />
-                    Experience: {item.experienceLevel} <br />
-                    Living Space: {item.livingSpaceNeeds}
+                    Purchase Budget: {item.purchaseBudget} <br/>
+                     Monthly Budget: {item.monthlyBudget} <br />
+                    Experience Level: {item.experienceLevel} <br />
+                    Living Space: {item.livingSpaceNeeds} <br/>
+                    Hypoallergenic:{item.isHypoAllergenic.toString()} <br/>
+                    Suitable for Vegetarians:{item.suitableForVegetarians.toString()} <br/>
+                    Good with Children:{item.goodWithChildren.toString()} <br/>
+                    Good with other pets:{item.goodWithOtherPets.toString()} <br/>
+                    Indoor pet: {item.prefersIndoorPet.toString()} <br/>
+
                   </p>
                   <a
                     href={`/shop/${item._id}`}

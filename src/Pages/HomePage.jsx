@@ -30,7 +30,7 @@ const HomePage = () => {
 
       {/* Categories Section */}
       <section className="bg-[var(--c2)] py-14 text-center px-4">
-        <h2 className="text-2xl md:text-3xl font-bold text-[var(--c5)] mb-8">Explore Categories</h2>
+        <h2 className="text-2xl md:text-3xl font-bold text-[var(--c5)] mb-8">Our Categories</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-6 max-w-6xl mx-auto">
           {["Dogs 🐶", "Cats 🐱","Rabbits 🐇", "Guinea Pigs 🐹", "Fishes 🐠"].map((cat, i) => (
             <div
