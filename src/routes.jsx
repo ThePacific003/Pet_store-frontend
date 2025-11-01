@@ -22,11 +22,15 @@ import PpLayout from "./Layout/PpLayout";
 import PaymentSuccess from "./Pages/PaymentSuccess";
 import PaymentFailed from "./Pages/PaymentFailed";
 import Adminorders from "./Pages/Adminorders"
+import VerifyOtp from "./Pages/Verifyotp";
+
 export const router = createBrowserRouter(
     createRoutesFromElements(
         <>
         <Route path='/'  element={<LoginPage/>}/>
         <Route path="/signup" element={<SignupPage/>}/>
+        <Route path="/verify-otp" element={<VerifyOtp />} />
+
         <Route path="/payment-success" element={<PaymentSuccess />} />
         <Route path="/payment-failed" element={<PaymentFailed />} />
 

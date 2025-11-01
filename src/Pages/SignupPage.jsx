@@ -24,13 +24,10 @@ const SignupPage = () => {
     }
 
     try {
-
-    await signup(formData)
-    toast.success("Signed up !!!")
-    navigate("/")
+      await signup(formData)
   }
   catch(error){
-    alert(error.response?.data?.message || "Signup failed");
+    alert(error.message || "Signup failed");
   }
   }
   const handleClick = () => {

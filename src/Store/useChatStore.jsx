@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { axiosInstance} from "../Axios/axiosinc";
+import {useAuthStore} from "./useAuthStore"
 
 export const useChatStore=create((set,get)=>({
     userss: [],
@@ -36,5 +37,29 @@ export const useChatStore=create((set,get)=>({
         catch(error){
             throw error
         }
-    }
+    },
+
+    subscribeToMessages : ()=>{
+            const{selectedUser} = get()
+            
+            if(!selectedUser) return
+            
+            const socket = useAuthStore.getState().socket
+            socket.on("newMessage", (newMessage)=>{
+                if(newMessage.senderId !== selectedUser._id) return
+                set({
+                    messages: [...get().messages, newMessage]
+                })
+            })
+        },
+
+
+        unsubscribeToMessages: ()=>{
+            const socket = useAuthStore.getState().socket
+            socket.off("newMessage")
+        },
+
+        setSelectedUser : (selectedUser)=> set({selectedUser}
+        )
+    
 }))
